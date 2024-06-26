@@ -1,8 +1,6 @@
 ---
 import { useStoryblokApi } from '@storyblok/astro'
-// @ts-ignore
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
-import EntryLayout from '../layouts/EntryLayout.astro'
 import parseUrl from '@/storyblok/utils/parseUrl'
 import isPreview from '@/storyblok/utils/isPreview'
 import generateStaticPaths from '@/storyblok/utils/generateStaticPaths'
@@ -11,7 +9,7 @@ export async function getStaticPaths() {
   // console.log('paths', paths)
   return paths
 }
-const params = Astro.params
+const params = Astro.params as any
 let props = isPreview() ? parseUrl(params?.slug) : Astro.props
 const { slug, language, langSwitch } = props
 const storyblokApi = useStoryblokApi()

@@ -25,6 +25,7 @@ export default async function generateStaticPaths() {
           [lang]: lang === 'en' ? `/${slug ?? ''}` : `/${lang}/${slug ?? ''}`,
         }
       })
+      // @ts-ignore
       paths.push({
         props: { language, slug, langSwitch },
         params: {
