@@ -1,0 +1,46 @@
+---
+import { defineInk } from '@/utils/ink'
+import { config } from './Button.ink'
+
+export type Color = 'DEFAULT' | 'spark' | 'white'
+
+export type Variant = 'DEFAULT' | 'contained' | 'outlined'
+
+export type Size = 'DEFAULT'
+
+export type Props = {
+  as?: string
+  class?: string
+  label?: string
+  variant?: Variant
+  color?: Color
+  size?: Size
+}
+
+const {
+  as: Component = 'a',
+  class: className,
+  preset,
+  label,
+  ...props
+} = Astro.props
+
+const inkProps = {
+  variant: Astro.props?.variant,
+  color: Astro.props?.color,
+  size: Astro.props?.size,
+}
+
+const { ink, inkProp } = defineInk({
+  config,
+  ...inkProps,
+})
+---
+
+<Component class={ink('root', className)} {...props}>
+  <span class="inline-block">
+    <slot>{label}</slot>
+  </span>
+</Component>
+
+<!--  -->

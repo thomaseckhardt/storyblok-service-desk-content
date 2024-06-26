@@ -1,0 +1,37 @@
+---
+import BaseHead from '@/components/layout/BaseHead.astro'
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <title>{title}</title>
+    <BaseHead />
+    <slot name="head" />
+    <script
+      src="/node_modules/@iframe-resizer/child/index.umd.js"
+      is:inline
+      async></script>
+    <script
+      is:inline
+      defer
+      src="https://unpkg.com/@alpinejs/ui@3.14.1-beta.0/dist/cdn.min.js"
+    ></script>
+    <script
+      is:inline
+      defer
+      src="https://unpkg.com/@alpinejs/focus@3.14.1/dist/cdn.min.js"></script>
+    <script
+      is:inline
+      defer
+      src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,25 @@
+---
+import SiteHeader from '@/components/shared/SiteHeader.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import type { LoomVideoPageStoryblok, PageStoryblok } from '@/types/storyblok'
+import type { StoryblokStory } from 'storyblok-generate-ts'
+
+export type Props = {
+  class?: string
+  story: StoryblokStory<PageStoryblok> | StoryblokStory<LoomVideoPageStoryblok>
+}
+
+const { story } = Astro.props
+const { content } = story || {}
+
+const meta = {
+  title: content?.title || story?.name,
+}
+---
+
+<BaseLayout {...Astro.props} title={meta.title}>
+  <div class="min-h-full py-12">
+    <!-- <SiteHeader /> -->
+    <slot />
+  </div>
+</BaseLayout>

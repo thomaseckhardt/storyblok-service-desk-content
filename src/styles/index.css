@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {} */
+
+@layer base {
+  * {
+    /* Fix overflow of grid/flex childs */
+    min-width: 0;
+    /* Prevent any object from being highlighted upon touch event*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+    @apply break-words;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply font-sans;
+    @apply text-lg;
+    @apply break-words;
+
+    /* Push footer to the bottom  */
+    min-height: 100vh;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+
+  svg {
+    @apply pointer-events-none;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    @apply font-mono;
+  }
+}
+
+@layer components {
+  .display-1 {
+    @apply font-sans;
+    font-weight: 800;
+    font-size: 6rem; /* 96px */
+    line-height: 0.91666667; /* 88px */
+    text-transform: uppercase;
+  }
+
+  .area {
+    --meta: minmax(0, 1fr);
+    display: grid;
+    /* grid-template-areas: '. . meta . .' '. . container1 container2 . .' 'ad ad ad ad ad'; */
+    grid-template-columns:
+      var(--offset-wide)
+      var(--meta)
+      /* min(calc(100vw - var(--offset-wide) * 2), var(--container-max-width)) */
+      min(calc(50vw - var(--offset-wide) - var(--content-margin)))
+      min(calc(50vw - var(--offset-wide) - var(--content-margin)))
+      var(--meta)
+      var(--offset-wide);
+  }
+  .area .area-content {
+    grid-column: 3 / -3;
+  }
+  .area .area-content-left {
+    grid-column: 3 / 4;
+  }
+  .area .area-content-right {
+    grid-column: 4 / -3;
+  }
+
+  .area .area-wide {
+    grid-column: 2 / -2;
+  }
+  .area .area-wide-left {
+    grid-column: 2 / 4;
+  }
+  .area .area-wide-right {
+    grid-column: 4 / -2;
+  }
+
+  .area .area-full {
+    grid-column: 1 / -1;
+  }
+  .area .area-full-left {
+    grid-column: 1 / 4;
+  }
+  .area .area-full-right {
+    grid-column: 4 / -1;
+  }
+
+  [astro-icon] {
+    fill: currentColor;
+  }
+}
+
+@layer utilities {
+  .absolute-center {
+    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .scrollbar-hidden {
+    /* for Firefox */
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    /* for Chrome, Safari, Edge, and Opera */
+    display: none;
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "components": [
+    {
+      "name": "LoomVideo",
+      "display_name": null,
+      "created_at": "2024-04-18T14:30:49.512Z",
+      "updated_at": "2024-04-18T14:31:50.920Z",
+      "id": 5675361,
+      "schema": {
+        "title": {
+          "type": "textarea",
+          "pos": 0,
+          "required": true
+        },
+        "embedCode": {
+          "type": "textarea",
+          "required": true,
+          "pos": 1
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "LoomVideo",
+      "component_group_uuid": null,
+      "color": null,
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "LoomVideoPage",
+      "display_name": null,
+      "created_at": "2024-04-18T14:59:14.953Z",
+      "updated_at": "2024-04-19T08:37:23.481Z",
+      "id": 5675579,
+      "schema": {
+        "title": {
+          "type": "textarea",
+          "pos": 0
+        },
+        "loomLink": {
+          "type": "text",
+          "pos": 1
+        },
+        "transcriptSrt": {
+          "type": "textarea",
+          "pos": 2
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": true,
+      "preview_tmpl": null,
+      "is_nestable": false,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "LoomVideoPage",
+      "component_group_uuid": null,
+      "color": null,
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "Page",
+      "display_name": null,
+      "created_at": "2024-04-18T14:27:47.186Z",
+      "updated_at": "2024-04-18T14:28:21.762Z",
+      "id": 5675355,
+      "schema": {
+        "body": {
+          "type": "bloks"
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": true,
+      "preview_tmpl": null,
+      "is_nestable": false,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "Page",
+      "component_group_uuid": null,
+      "color": null,
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    }
+  ]
+}

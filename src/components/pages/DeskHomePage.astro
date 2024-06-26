@@ -1,0 +1,74 @@
+---
+import EntryLayout from '@/layouts/EntryLayout.astro'
+import { fetchStories } from '@/storyblok/utils/fetchStories'
+import LoomCard from '../shared/LoomCard.astro'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import { VideoCameraIcon } from '@heroicons/react/24/outline'
+
+const tabs = [
+  {
+    name: 'How-To Videos',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>`,
+  },
+]
+
+const { story } = Astro.props
+
+const howToVideoStories =
+  (await fetchStories({
+    starts_with: `${story.full_slug}how-to-video`,
+    sort_by:
+      'created_at:desc,published_at:desc,content.date:desc,sort_by_date:desc',
+  })) ?? []
+const howToVideos = [...howToVideoStories]
+---
+
+<EntryLayout story={story}>
+  <div class="">
+    <main>
+      <div class="">
+        <div x-data x-tabs class="">
+          <div class="border-b border-gray-200">
+            <nav x-tabs:list class="-mb-px flex space-x-8" aria-label="Tabs">
+              {
+                tabs.map((tab) => (
+                  <button
+                    x-tabs:tab
+                    type="button"
+                    x-bind:class="$tab.isSelected ? 'border-black text-black' : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'"
+                    class="group inline-flex items-center border-b-2 px-1 py-4 text-sm font-bold"
+                  >
+                    <div
+                      x-bind:class="$tab.isSelected ? 'text-black' : 'text-slate-400 group-hover:text-slate-500'"
+                      class="-ml-0.5 mr-2 h-5 w-5"
+                      set:html={tab.icon}
+                    />
+                    <span>{tab.name}</span>
+                  </button>
+                ))
+              }
+            </nav>
+          </div>
+          <div x-tabs:panels class="mt-12">
+            <div
+              class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            >
+              {
+                howToVideos?.map((loomVideoStory) => (
+                  <LoomCard
+                    loomLink={loomVideoStory.content.loomLink}
+                    date={
+                      loomVideoStory.sort_by_date ??
+                      loomVideoStory.first_published_at ??
+                      loomVideoStory.created_at
+                    }
+                  />
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</EntryLayout>

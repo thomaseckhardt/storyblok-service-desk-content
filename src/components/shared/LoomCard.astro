@@ -1,0 +1,54 @@
+---
+import loomSdk from '@loomhq/loom-embed'
+import fromatDuration from 'format-duration'
+
+const props = Astro.props
+const { oembed } = loomSdk
+
+const dateFormat = new Intl.DateTimeFormat('en', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+})
+const date = new Date(props.date)
+const dateNice = dateFormat.format(date)
+
+const loomLink = new URL(props?.loomLink)
+const loom = await oembed(loomLink.href)
+console.log('Loom', loomLink, loom)
+
+const loomUrl = loomLink.origin + loomLink.pathname
+const videoId = loomLink.pathname.split('/').pop()
+
+const thumbnail = `https://cdn.loom.com/sessions/thumbnails/${videoId}-with-play.gif`
+const thumbnailVideo = `https://cdn.loom.com/sessions/thumbnails/${videoId}-00001.mp4#t=0.1`
+const thumbnailJpeg = `https://cdn.loom.com/sessions/thumbnails/${videoId}-00001.jpg`
+const embedSrc = loomLink.href.replace('share', 'embed')
+const duration = fromatDuration(loom?.duration * 1000 ?? 0)
+---
+
+<article
+  class="hover:shadow-derek relative flex w-full flex-col rounded-xl border border-gray-200 bg-white transition duration-300 hover:-translate-y-1"
+>
+  <a href={loomUrl} class="absolute inset-0 z-10 block" target="_blank">
+    <span class="sr-only">Watch {loom.title}</span>
+  </a>
+  <div
+    class="relative aspect-16/9 w-full overflow-hidden rounded-tl-xl rounded-tr-xl"
+  >
+    <img
+      src={thumbnailJpeg}
+      alt=""
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div
+      class="absolute bottom-2 right-2 rounded-full bg-slate-900 px-3 py-2 text-sm font-bold leading-none text-white"
+    >
+      {duration} min
+    </div>
+  </div>
+  <div class="flex flex-1 flex-col p-4">
+    <div class="font-bold leading-tight">{loom.title}</div>
+    <div class="mt-auto pt-2 text-sm text-slate-600">{dateNice}</div>
+  </div>
+</article>
