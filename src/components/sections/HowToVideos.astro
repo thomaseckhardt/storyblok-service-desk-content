@@ -27,11 +27,13 @@ groupedStories.push({
     {
       groupedStories.map((group) => (
         <div>
-          <h2 class="sticky__ top-0 z-10 flex items-center bg-white py-4">
-            <div class="text-xl font-bold tracking-tight text-black">
-              {group.category}
-            </div>
-          </h2>
+          {isGrouped && (
+            <h2 class="sticky__ top-0 z-10 flex items-center bg-white py-4">
+              <div class="text-xl font-bold tracking-tight text-black">
+                {group.category}
+              </div>
+            </h2>
+          )}
           <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {group.stories.map((loomVideoStory) => (
               <LoomCard
