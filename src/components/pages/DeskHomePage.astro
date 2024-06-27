@@ -1,7 +1,7 @@
 ---
 import EntryLayout from '@/layouts/EntryLayout.astro'
 import { fetchStories } from '@/storyblok/utils/fetchStories'
-import LoomCard from '../shared/LoomCard.astro'
+import HowToVideos from '../sections/HowToVideos.astro'
 
 const tabs = [
   {
@@ -17,8 +17,8 @@ const howToVideoStories =
     starts_with: `${story.full_slug}how-to-video`,
     sort_by:
       'created_at:desc,published_at:desc,content.date:desc,sort_by_date:desc',
+    content_type: 'LoomLink',
   })) ?? []
-const howToVideos = [...howToVideoStories]
 ---
 
 <EntryLayout story={story}>
@@ -47,24 +47,7 @@ const howToVideos = [...howToVideoStories]
               }
             </nav>
           </div>
-          <div x-tabs:panels class="mt-12">
-            <div
-              class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-            >
-              {
-                howToVideos?.map((loomVideoStory) => (
-                  <LoomCard
-                    loomLink={loomVideoStory.content.loomLink}
-                    date={
-                      loomVideoStory.sort_by_date ??
-                      loomVideoStory.first_published_at ??
-                      loomVideoStory.created_at
-                    }
-                  />
-                ))
-              }
-            </div>
-          </div>
+          <HowToVideos x-tabs:panels stories={howToVideoStories} />
         </div>
       </div>
     </main>

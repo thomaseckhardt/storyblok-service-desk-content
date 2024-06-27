@@ -15,7 +15,6 @@ const dateNice = dateFormat.format(date)
 
 const loomLink = new URL(props?.loomLink)
 const loom = await oembed(loomLink.href)
-console.log('Loom', loomLink, loom)
 
 const loomUrl = loomLink.origin + loomLink.pathname
 const videoId = loomLink.pathname.split('/').pop()
@@ -28,7 +27,7 @@ const duration = fromatDuration(loom?.duration * 1000 ?? 0)
 ---
 
 <article
-  class="hover:shadow-derek relative flex w-full flex-col rounded-xl border border-gray-200 bg-white transition duration-300 hover:-translate-y-1"
+  class="relative flex w-full flex-col rounded-xl border border-gray-200 bg-white transition duration-300 hover:-translate-y-1 hover:shadow-derek"
 >
   <a href={loomUrl} class="absolute inset-0 z-10 block" target="_blank">
     <span class="sr-only">Watch {loom.title}</span>

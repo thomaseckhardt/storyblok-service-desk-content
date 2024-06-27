@@ -1,0 +1,51 @@
+---
+import LoomCard from '../shared/LoomCard.astro'
+import startCase from 'lodash/startCase'
+
+const props = Astro.props
+const { stories, ...rest } = props
+
+const categories = stories
+  ?.map((story) => story.content.category)
+  .filter(Boolean)
+
+const isGrouped = categories.length > 0
+const groupedStories = isGrouped
+  ? categories.map((category) => ({
+      category: startCase(category),
+      stories: stories.filter((story) => story.content.category === category),
+    }))
+  : []
+groupedStories.push({
+  category: 'Other Content',
+  stories: stories.filter((story) => !story.content.category),
+})
+---
+
+<div {...rest} class="mt-12">
+  <div class="grid gap-y-12">
+    {
+      groupedStories.map((group) => (
+        <div>
+          <h2 class="sticky__ top-0 z-10 flex items-center bg-white py-4">
+            <div class="text-xl font-bold tracking-tight text-black">
+              {group.category}
+            </div>
+          </h2>
+          <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {group.stories.map((loomVideoStory) => (
+              <LoomCard
+                loomLink={loomVideoStory.content.loomLink}
+                date={
+                  loomVideoStory.sort_by_date ??
+                  loomVideoStory.first_published_at ??
+                  loomVideoStory.created_at
+                }
+              />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>

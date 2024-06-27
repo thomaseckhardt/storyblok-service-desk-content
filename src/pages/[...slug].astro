@@ -6,23 +6,34 @@ import isPreview from '@/storyblok/utils/isPreview'
 import generateStaticPaths from '@/storyblok/utils/generateStaticPaths'
 export async function getStaticPaths() {
   const paths = await generateStaticPaths()
-  // console.log('paths', paths)
+  console.log('paths', paths)
   return paths
 }
 const params = Astro.params as any
 let props = isPreview() ? parseUrl(params?.slug) : Astro.props
 const { slug, language, langSwitch } = props
-const storyblokApi = useStoryblokApi()
-const { data } = await storyblokApi.get(
-  `cdn/stories/${slug === undefined ? 'home' : slug}`,
-  {
-    version: isPreview() ? 'draft' : 'published',
-    resolve_relations: ['popular-articles.articles'],
-    language,
-  },
-)
-const story = data.story
-// console.log('[...slug] story', story)
+let story: any = undefined
+
+try {
+  const storyblokApi = useStoryblokApi()
+  const { data } = await storyblokApi.get(
+    `cdn/stories/${slug === undefined ? 'home' : slug}`,
+    {
+      version: isPreview() ? 'draft' : 'published',
+      // resolve_relations: ['popular-articles.articles'],
+      language,
+    },
+  )
+  story = data.story
+  if (!story) {
+    console.log('NOT FOUND')
+    console.log(params)
+    console.log(story)
+  }
+} catch (e) {
+  console.log('ERROR')
+  console.error(e)
+}
 ---
 
 {story?.content && <StoryblokComponent story={story} blok={story?.content} />}
