@@ -6,6 +6,7 @@ export default async function generateStaticPaths() {
   const storyblokApi = useStoryblokApi()
   const { data } = await storyblokApi.get('cdn/links', {
     version: isPreview() ? 'draft' : 'published',
+    per_page: 1000,
   })
   let links = data.links
   links = Object.values(links)
