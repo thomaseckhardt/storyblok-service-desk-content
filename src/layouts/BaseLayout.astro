@@ -13,10 +13,8 @@ const { title } = Astro.props
     <title>{title}</title>
     <BaseHead />
     <slot name="head" />
-    <script
-      src="/node_modules/@iframe-resizer/child/index.umd.js"
-      is:inline
-      async></script>
+    <script src="/node_modules/@iframe-resizer/child/index.umd.js" async
+    ></script>
     <script
       is:inline
       defer
