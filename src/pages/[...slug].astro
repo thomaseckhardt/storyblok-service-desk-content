@@ -6,7 +6,7 @@ import isPreview from '@/storyblok/utils/isPreview'
 import generateStaticPaths from '@/storyblok/utils/generateStaticPaths'
 export async function getStaticPaths() {
   const paths = await generateStaticPaths()
-  console.log('paths', paths)
+  // console.log('paths', paths)
   return paths
 }
 const params = Astro.params as any

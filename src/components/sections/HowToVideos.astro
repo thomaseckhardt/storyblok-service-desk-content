@@ -1,22 +1,23 @@
 ---
+import Badge from '../shared/Badge.astro'
 import LoomCard from '../shared/LoomCard.astro'
 import startCase from 'lodash/startCase'
 
 const props = Astro.props
 const { stories, ...rest } = props
 
-const categories = stories
-  ?.map((story) => story.content.category)
-  .filter(Boolean)
+const categories = [
+  ...new Set(stories?.map((story) => story.content.category).filter(Boolean)),
+]
 
 const isGrouped = categories.length > 0
-const groupedStories = isGrouped
+const groups = isGrouped
   ? categories.map((category) => ({
-      category: startCase(category),
+      category: startCase(category as string), // Add type assertion here
       stories: stories.filter((story) => story.content.category === category),
     }))
   : []
-groupedStories.push({
+groups.push({
   category: 'Other Content',
   stories: stories.filter((story) => !story.content.category),
 })
@@ -25,22 +26,25 @@ groupedStories.push({
 <div {...rest} class="mt-12">
   <div class="grid gap-y-12">
     {
-      groupedStories.map((group) => (
+      groups.map((group) => (
         <div>
           {isGrouped && (
             <h2 class="sticky__ top-0 z-10 flex items-center bg-white py-4">
-              <div class="text-xl font-bold tracking-tight text-black">
+              <div class="flex items-center gap-x-3 text-xl font-bold tracking-tight text-black">
                 {group.category}
+                <Badge>{group.stories.length}</Badge>
               </div>
             </h2>
           )}
-          <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {/* <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"> */}
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-6">
             {group.stories.map((loomVideoStory) => (
               <LoomCard
                 loomLink={loomVideoStory.content.loomLink}
                 date={
-                  loomVideoStory.sort_by_date ??
-                  loomVideoStory.first_published_at ??
+                  loomVideoStory.content.date ||
+                  loomVideoStory.sort_by_date ||
+                  loomVideoStory.first_published_at ||
                   loomVideoStory.created_at
                 }
               />

@@ -1,13 +1,59 @@
 ---
 import VideoGrid from '@/components/sections/VideoGrid.astro'
 import PageHeader from '@/components/shared/PageHeader.astro'
+import { fetchStories } from '@/storyblok/utils/fetchStories'
+import { toHSL } from '@/utils/string-to-hsl'
+import acronymer from 'acronymer'
+
+const deskStories =
+  (await fetchStories({
+    sort_by: 'name:asc',
+    content_type: 'DeskHomePage',
+  })) ?? []
+
+const desks = deskStories.map((desk) => ({
+  name: desk.name,
+  spaceId: desk.slug,
+  url: `/${desk.full_slug}`,
+  color: toHSL(desk.name),
+  acronym: acronymer(desk.name),
+}))
+
+console.log('deskStories', deskStories)
 ---
 
 <div class="py-10">
   <PageHeader title="Dashboard" />
-  <main>
-    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-      <VideoGrid />
+  <main class="mx-auto mt-6 max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="">
+      <h2 class="text-sm font-medium text-gray-500">Service Desks</h2>
+      <ul
+        role="list"
+        class="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
+      >
+        {
+          desks.map((desk) => (
+            <li class="col-span-1">
+              <a href={desk.url} class="flex rounded-md shadow-sm">
+                <div
+                  class="flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
+                  style={{ backgroundColor: desk.color }}
+                >
+                  {desk.acronym}
+                </div>
+                <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
+                  <div class="flex-1 truncate px-4 py-2 text-sm">
+                    <h3 class="font-bold text-gray-900 hover:text-gray-600">
+                      {desk.name}
+                    </h3>
+                    <p class="text-gray-500">#{desk.spaceId}</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </main>
 </div>
